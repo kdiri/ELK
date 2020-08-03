@@ -1,0 +1,6 @@
+setup.kibana:
+  host: "kibana:5601"
+
+output.logstash:
+  pretty: true
+  hosts: ["logstash:5000"]

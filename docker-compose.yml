@@ -1,1 +1,85 @@
-version: '3'
+version: '3.2'
+
+services:
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+    volumes:
+      - type: bind
+        source: ./elasticsearch/data
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m"
+    networks:
+      - elk
+
+  kibana:
+    build:
+      context: ./kibana
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m"
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: True
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
+  logstash:
+    build:
+      context: ./logstash
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTICSEARCH_HOST: "staging-elasticsearch:9200"
+    command: logstash -f /etc/logstash/conf.d/logstash.conf
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+      - type: bind
+        source: ./logstash/pipeline/logstash.conf
+        target: /etc/logstash/conf.d/logstash.conf
+      - type: bind
+        source: ./logstash/pipeline/
+        target: /usr/share/logstash/pipeline
+    ports:
+      - 5000:5000/tcp
+      - 5000:5000/udp
+      - 9600:9600
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+    restart: on-failure
+
+  filebeat:
+    build:
+      context: ./filebeat
+      args:
+        ELK_VERSION: 7.8.0
+    command: ["--strict.perms=false"]
+    volumes:
+      - type: bind
+        source: ./filebeat/config/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+      - type: bind
+        source: ./logs/python
+        target: /var/log/python
+    depends_on:
+      - logstash
+    networks:
+      - elk
+    restart: on-failure
+
+networks:
+  elk:
+    driver: bridge
