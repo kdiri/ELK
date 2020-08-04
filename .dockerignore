@@ -1,0 +1,12 @@
+.git
+.gitignore
+.dockerignore
+Dockerfile*
+docker-compose*
+logstash
+docker
+*.cfg
+tox.ini
+reports
+doc
+README.md
