@@ -1,3 +1,10 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - log/*.log
+  tags: ["flask"]
+
 setup.kibana:
   host: "kibana:5601"
 
