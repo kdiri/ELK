@@ -67,14 +67,14 @@ services:
       context: ./filebeat
       args:
         ELK_VERSION: 7.8.0
-    command: ["--strict.perms=false"]
+    command: ["-v", "-e", "--strict.perms=false"]
     volumes:
       - type: bind
         source: ./filebeat/config/filebeat.yml
         target: /usr/share/filebeat/filebeat.yml
       - type: bind
-        source: ./logs/python
-        target: /var/log/python
+        source: ./logs/
+        target: /var/log/elk/
     depends_on:
       - logstash
     networks:

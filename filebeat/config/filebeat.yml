@@ -2,7 +2,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - log/*.log
+    - /var/log/elk/*.log
   tags: ["flask"]
 
 setup.kibana:
