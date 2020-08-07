@@ -21,7 +21,7 @@ $ docker logs -f elk_logstash_1
 ```
 
 ## Visualise Kibana
-Open your browser and go to 0.0.0.0:5601. That's it ! :cinema: :pager:
+Open your browser and go to http://0.0.0.0:5601. That's it ! :cinema: :pager:
 
 ## Stop ELK-UseCase
 ```bash
