@@ -10,4 +10,4 @@ setup.kibana:
 
 output.logstash:
   pretty: true
-  hosts: ["logstash:5000"]
+  hosts: ["logstash:5044"]
