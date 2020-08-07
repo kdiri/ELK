@@ -7,8 +7,8 @@ An example utilization of [filebeat](https://www.elastic.co/beats/filebeat), [lo
 
 ## Launch ELK-UseCase
 As we are in the same directory of docker-compose file 
-and there are no any other docker-compose file, you don't need
-precise yml file by doing `-f docker-compose.yml
+and there is no any other docker-compose file, you don't need to
+precise .yml file by doing `-f docker-compose.yml`
 ```bash
 $ cd ELK/
 $ docker-compose up -d
